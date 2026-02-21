@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rancle Bank | ATM</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./main.css">
+<link rel="shortcut icon" href="../Others/bank.png" type="image/x-icon">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <span class="nav-logo">Ran<span>cle</span> Bank</span>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showModal('balance')">Balance</a></li>
+    <li><a href="#" onclick="showModal('withdraw')">Withdrawal</a></li>
+    <li><a href="#" onclick="showModal('deposit')">Deposit</a></li>
+    <li><a href="#">Account</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="nav-user-info">
+      <div class="nav-username">Randy Odawutey</div>
+      <div class="nav-role">Current Account</div>
+    </div>
+    <div class="avatar">R</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="ring ring-1"></div>
+  <div class="ring ring-2"></div>
+  <div class="ring ring-3"></div>
+
+  <div class="hero-content">
+    <div class="hero-badge">Secure Banking Portal</div>
+    <h1 class="hero-title">
+      Where your money<br><em>grows with you.</em>
+    </h1>
+    <p class="hero-subtitle">
+      A trusted digital banking experience built for clarity, speed, and security. Manage your finances with total confidence.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="showModal('deposit')">
+        ↑ Make a Deposit
+      </button>
+      <button class="btn-ghost" onclick="showModal('withdraw')">
+        ↓ Withdraw Funds
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="dashboard">
+
+  <!-- Balance Card -->
+  <div class="balance-card animate">
+    <div class="balance-label">Total Available Balance</div>
+    <div class="balance-amount"><span>$</span><span id="mainBalance">0.00</span></div>
+    <div class="balance-change">↑ +2.4% this month</div>
+    <div class="card-divider"></div>
+    <div class="card-number-row">
+      <div class="card-dots">
+        <div class="dot-group"><span></span><span></span><span></span><span></span></div>
+        <div class="dot-group"><span></span><span></span><span></span><span></span></div>
+        <div class="dot-group"><span></span><span></span><span></span><span></span></div>
+        <span class="card-last4">4291</span>
+      </div>
+      <span class="card-type">Rancle Gold</span>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="quick-actions animate">
+    <div class="section-label">Quick Actions</div>
+    <div class="actions-grid">
+      <button class="action-btn" onclick="showModal('deposit')">
+        <div class="action-icon">⬆</div>
+        <div class="action-label">Deposit</div>
+        <div class="action-sub">Add funds instantly</div>
+      </button>
+      <button class="action-btn" onclick="showModal('withdraw')">
+        <div class="action-icon">⬇</div>
+        <div class="action-label">Withdraw</div>
+        <div class="action-sub">Cash out securely</div>
+      </button>
+      <button class="action-btn" onclick="showToast('Transfer feature coming soon!')">
+        <div class="action-icon">↔</div>
+        <div class="action-label">Transfer</div>
+        <div class="action-sub">Send to accounts</div>
+      </button>
+      <button class="action-btn" onclick="showModal('balance')">
+        <div class="action-icon">◎</div>
+        <div class="action-label">Statement</div>
+        <div class="action-sub">View history</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Right Panel -->
+  <div class="stats-panel">
+
+    <!-- Mini Stats -->
+    <div class="mini-stats">
+      <div class="stat-card animate">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value"><span id="depositedTotal">0.00</span></div>
+        <div class="stat-label">Deposited</div>
+      </div>
+      <div class="stat-card animate" style="animation-delay:0.1s">
+        <div class="stat-icon">📤</div>
+        <div class="stat-value"><span id="withdrawnTotal">0.00</span></div>
+        <div class="stat-label">Withdrawn</div>
+      </div>
+      <div class="stat-card animate" style="animation-delay:0.2s">
+        <div class="stat-icon">📊</div>
+        <div class="stat-value"><span id="growthTotal">0.00%</span></div>
+        <div class="stat-label">Growth</div>
+      </div>
+    </div>
+
+    <!-- Spending Chart -->
+    <div class="chart-section animate" style="animation-delay:0.15s">
+      <div class="panel-header">
+        <span class="panel-title">Monthly Activity</span>
+        <span class="view-all">2025 →</span>
+      </div>
+      <div class="chart-bars" id="chartBars">
+        <!-- bars injected by JS -->
+      </div>
+    </div>
+
+    <!-- Exchange Rates Panel -->
+    <div class="transactions-panel animate" style="animation-delay:0.2s">
+      <div class="panel-header" id="ratesPanel">
+        <span class="panel-title">Exchange Rates</span>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div class="rates-sub" style="font-size:0.85rem;color:var(--text-muted)">(base USD)</div>
+          <button id="refreshRates" class="btn-icon" title="Refresh rates">⟳</button>
+          <div id="ratesUpdated" class="rates-updated">&nbsp;</div>
+        </div>
+      </div>
+
+      <!-- Top small chart (USD / GBP / GHS) -->
+      <div class="chart-section" style="margin-top:8px;margin-bottom:10px;padding:0.75rem;border-radius:12px">
+        <div id="chartBars" class="chart-bars" style="height:56px"></div>
+      </div>
+
+      <!-- Compact list with logos and values -->
+      <div class="rates-list" id="ratesList">Loading rates…</div>
+    </div>
+
+      <div id="currencyList" class="currency-list">
+        <!-- Currency cards with 7-day mini charts will be injected here by JS -->
+        <div class="currency-loading">Loading currency charts…</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <span class="nav-logo">Ran<span>cle</span> Bank</span>
+    <p class="footer-tagline">A modern banking experience rooted in trust, growth, and financial clarity for everyone.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Services</h4>
+    <ul class="footer-links">
+      <li><a href="#">Savings Account</a></li>
+      <li><a href="#">Fixed Deposits</a></li>
+      <li><a href="#">Loans</a></li>
+      <li><a href="#">Insurance</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Support</h4>
+    <ul class="footer-links">
+      <li><a href="#">Help Center</a></li>
+      <li><a href="#">Contact Us</a></li>
+      <li><a href="#">Security</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Company</h4>
+    <ul class="footer-links">
+      <li><a href="#">About Rancle</a></li>
+      <li><a href="#">Careers</a></li>
+      <li><a href="#">Press</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span class="footer-copy">© 2025 Rancle Bank · Odawutei. All rights reserved.</span>
+  <div class="footer-status">
+    <div class="status-dot"></div>
+    All systems operational
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title" id="modalTitle">Action</div>
+    <div class="modal-sub" id="modalSub">Enter the required details below.</div>
+    <div id="modalBody"></div>
+    <div class="modal-actions">
+      <button class="btn-sm-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn-sm-primary" onclick="handleModalSubmit()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <span>✦</span>
+  <span id="toastMsg"></span>
+</div>
+
+<script src="./main.js"></script>
+</body>
+</html>
